@@ -15,11 +15,11 @@ from datasets import *
 
 def gen_data_loader(paradigm, probs=[0.65, 0.65, 0.65]):
     if paradigm=='blocked':
-        contexts_to_load = [0,1,0,1] + [randint(0,1) for _ in range(40)]
+        contexts_to_load = [0,1,0,1] + [randint(0,2) for _ in range(40)]
         n_samples_per_context = [40,40,40,40] + [1]*40
         ds = CSWDataset(n_samples_per_context, contexts_to_load, probs=probs)
     elif paradigm == 'interleaved':
-        contexts_to_load = [0,1]*80 + [randint(0,1) for _ in range(40)]
+        contexts_to_load = [0,1]*80 + [randint(0,2) for _ in range(40)]
         n_samples_per_context = [1]*160 + [1]*40
         ds = CSWDataset(n_samples_per_context, contexts_to_load, probs=probs)
     elif paradigm == 'compositional_words':
@@ -32,15 +32,15 @@ def gen_data_loader(paradigm, probs=[0.65, 0.65, 0.65]):
         assert probs[0]==probs[2], 'Probs for context 0 and 2 must be the same'
         ds = CompositionalWords(n_samples_per_context, contexts_to_load, probs=[probs[0], probs[0], probs[0]])
     elif paradigm == 'early':
-        contexts_to_load = [0,1] + [0,1]*40 + [randint(0,1) for _ in range(40)]
+        contexts_to_load = [0,1] + [0,1]*40 + [randint(0,2) for _ in range(40)]
         n_samples_per_context = [40,40] + [1,1]*40 + [1]*40
         ds = CSWDataset(n_samples_per_context, contexts_to_load, probs=probs)
     elif paradigm == 'middle':
-        contexts_to_load = [0,1]*20 + [0,1] + [0,1]*20 + [randint(0,1) for _ in range(40)]
+        contexts_to_load = [0,1]*20 + [0,1] + [0,1]*20 + [randint(0,2) for _ in range(40)]
         n_samples_per_context = [1,1]*20 + [40,40] + [1,1]*20 + [1]*40
         ds = CSWDataset(n_samples_per_context, contexts_to_load, probs=probs)
     elif paradigm == 'late':
-        contexts_to_load = [0,1]*40 + [0,1] + [randint(0,1) for _ in range(40)]
+        contexts_to_load = [0,1]*40 + [0,1] + [randint(0,2) for _ in range(40)]
         n_samples_per_context = [1,1]*40 + [40,40] + [1]*40
         ds = CSWDataset(n_samples_per_context, contexts_to_load, probs=probs)
     return torch.utils.data.DataLoader(ds, batch_size=1, shuffle=False)
